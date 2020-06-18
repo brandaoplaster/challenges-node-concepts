@@ -30,7 +30,26 @@ app.post("/repositories", (request, response) => {
 });
 
 app.put("/repositories/:id", (request, response) => {
-  // TODO
+  const { id } = request.params;
+  const { title, url, techs } = request.body;
+
+  const repositoryPosition = repositories.findIndex(repository => repository.id == id);
+
+  if (repositoryPosition < 0) {
+    return response.status(400).send();
+  }
+
+  const repository = {
+    id,
+    title,
+    url,
+    techs,
+    likes: repositories[repositoryPosition].likes
+  }
+
+  repositories[repositoryPosition] = repository;
+
+  return response.json(repository);
 });
 
 app.delete("/repositories/:id", (request, response) => {
